@@ -10,15 +10,18 @@ const LOCAL_STORAGE_KEY = 'contacts';
 export const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const contacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
     if (contacts) setContacts(contacts);
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
-  }, [contacts]);
+    isLoaded &&
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
+  }, [contacts, isLoaded]);
 
   const handleFilterChange = e => {
     setFilter(e.target.value.trim().toLowerCase());
@@ -38,7 +41,7 @@ export const App = () => {
   const deleteContact = id => {
     const leftContacts = contacts.filter(contact => contact.id !== id);
 
-    setContacts(leftContacts);
+    setContacts(c => c.filter(contact => contact.id !== id));
   };
 
   const filteredContacts = contacts.filter(({ name }) =>
