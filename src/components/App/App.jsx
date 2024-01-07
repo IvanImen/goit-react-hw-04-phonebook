@@ -39,8 +39,6 @@ export const App = () => {
   };
 
   const deleteContact = id => {
-    const leftContacts = contacts.filter(contact => contact.id !== id);
-
     setContacts(c => c.filter(contact => contact.id !== id));
   };
 
